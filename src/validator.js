@@ -4,10 +4,14 @@ class Validator {
 
     return validator.validate(sudoku)
   }
+
+  // Initializes global variables to be accessed later in methods
   constructor() {
     this.isValid = true;
     this.isComplete = true;
   }
+
+  // Given the sudoku in a string format, transfers it into a 2d array of numbers, excluding special symbols
   readToArray(SudokuString){
     let SudokuArr = [];
     let RowArr = [];
@@ -25,17 +29,26 @@ class Validator {
     if (RowArr.length !== 0)SudokuArr.push(RowArr);
     return SudokuArr;
   }
+
+
+  // Checks if all the rows in the sudoku are valid
   ValidateRows(SudokuArr){
     for (let i = 0; i < SudokuArr.length; i++) {
       this.ValidateArr(SudokuArr[i]);
     }
   }
+
+
+  // Checks if all the columns in the sudoku are valid
   ValidateCols(SudokuArr){
     for (let i = 0; i < SudokuArr.length;i++){
       this.ValidateArr(SudokuArr.map(column => column[i]));
 
     }
   }
+
+
+  // Given a number array, checks whether it contains zeroes or multiple numbers of the same value
   ValidateArr(NumArr){
     let numMap = new Map();
     let currentNum;
@@ -50,6 +63,19 @@ class Validator {
       this.isComplete = false;
     }
   }
+
+
+  // Validates whether a 3x3 grid has valid values
+  ValidateGrid(SudokuArr){
+    for (let startRow = 0; startRow < 9; startRow += 3) {
+      for (let startColl = 0; startColl < 9; startColl += 3) {
+        this.ValidateArr(this.ReadGridToArr(SudokuArr, startRow, startColl));
+      }
+    }
+  }
+
+
+  // Given the coordinates of the top left corner of the 3x3 grid, reads it to an array
   ReadGridToArr(SudokuArr, StartRow, StartColl){
     let res = [];
     for(let currentRow = StartRow; currentRow < 3 + StartRow; currentRow++){
@@ -59,13 +85,9 @@ class Validator {
     }
     return res;
   }
-  ValidateGrid(SudokuArr){
-    for (let startRow = 0; startRow < 9; startRow += 3) {
-      for (let startColl = 0; startColl < 9; startColl += 3) {
-        this.ValidateArr(this.ReadGridToArr(SudokuArr, startRow, startColl));
-      }
-    }
-  }
+
+
+
   validate(sudoku) {
     let validator = new Validator();
     const SudokuArr = this.readToArray(sudoku);
