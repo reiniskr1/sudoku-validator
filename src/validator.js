@@ -1,15 +1,16 @@
 class Validator {
   static validate(sudoku) {
     const validator = new Validator
-
     return validator.validate(sudoku)
   }
+
 
   // Initializes global variables to be accessed later in methods
   constructor() {
     this.isValid = true;
     this.isComplete = true;
   }
+
 
   // Given the sudoku in a string format, transfers it into a 2d array of numbers, excluding special symbols
   readToArray(SudokuString){
@@ -43,7 +44,6 @@ class Validator {
   ValidateCols(SudokuArr){
     for (let i = 0; i < SudokuArr.length;i++){
       this.ValidateArr(SudokuArr.map(column => column[i]));
-
     }
   }
 
@@ -66,10 +66,10 @@ class Validator {
 
 
   // Validates whether a 3x3 grid has valid values
-  ValidateGrid(SudokuArr){
+  ValidateGrids(SudokuArr){
     for (let startRow = 0; startRow < 9; startRow += 3) {
-      for (let startColl = 0; startColl < 9; startColl += 3) {
-        this.ValidateArr(this.ReadGridToArr(SudokuArr, startRow, startColl));
+      for (let startCol = 0; startCol < 9; startCol += 3) {
+        this.ValidateArr(this.ReadGridToArr(SudokuArr, startRow, startCol));
       }
     }
   }
@@ -79,8 +79,8 @@ class Validator {
   ReadGridToArr(SudokuArr, StartRow, StartColl){
     let res = [];
     for(let currentRow = StartRow; currentRow < 3 + StartRow; currentRow++){
-      for (let currentColl = StartColl; currentColl < 3 + StartColl; currentColl++){
-        res.push(SudokuArr[currentRow][currentColl]);
+      for (let currentCol = StartColl; currentCol < 3 + StartColl; currentCol++){
+        res.push(SudokuArr[currentRow][currentCol]);
       }
     }
     return res;
@@ -93,7 +93,7 @@ class Validator {
     const SudokuArr = this.readToArray(sudoku);
     validator.ValidateRows(SudokuArr);
     validator.ValidateCols(SudokuArr);
-    validator.ValidateGrid(SudokuArr);
+    validator.ValidateGrids(SudokuArr);
     if(validator.isValid){
       if (validator.isComplete)return "Sudoku is valid.";
       return "Sudoku is valid but incomplete."
